@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>ML Платформа - Titanic</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; }
+        input, button { margin-top: 5px; padding: 5px; }
+        button { background-color: #3498db; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #2980b9; }
+        #metricsImg { margin-top: 10px; max-width: 400px; display: none; }
+        .result { margin-top: 15px; padding: 10px; background: #ecf0f1; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>ML Платформа – Titanic</h1>
+
+    <!-- ETL запуск -->
+    <h2>ETL Pipeline</h2>
+    <button onclick="runETL()">Запустити ETL</button>
+    <div id="etlOutput" class="result"></div>
+
+    <!-- Train модель -->
+    <h2>Навчання моделі</h2>
+    <button onclick="trainModel('rf')">Train RandomForest</button>
+    <button onclick="trainModel('nn')">Train Neural Network</button>
+    <div id="trainOutput" class="result"></div>
+
+    <!-- Predict для одного пасажира -->
+    <h2>Прогноз для одного пасажира</h2>
+    <form id="predictForm">
+        <label>Стать (0=жінка, 1=чоловік):</label>
+        <input type="number" name="Sex" required>
+        <label>Вік:</label>
+        <input type="number" step="0.1" name="Age" required>
+        <label>Вартість квитка (Fare):</label>
+        <input type="number" step="0.1" name="Fare" required>
+        <label>FamilySize:</label>
+        <input type="number" name="FamilySize" required>
+        <label>IsAlone (0/1):</label>
+        <input type="number" name="IsAlone" required>
+        <label>Title (код):</label>
+        <input type="number" name="Title" required>
+        <label>AgeGroup (0=дитина,1=молодь,2=дорослий,3=літній):</label>
+        <input type="number" name="AgeGroup" required>
+        <label>Embarked (код):</label>
+        <input type="number" name="Embarked" required>
+        <button type="submit">Отримати прогноз</button>
+    </form>
+    <div id="predictOutput" class="result"></div>
+
+    <!-- Batch Predict -->
+    <h2>Batch Prediction (CSV)</h2>
+    <form id="batchForm" enctype="multipart/form-data">
+        <input type="file" id="batchFile" name="file" accept=".csv">
+        <button type="button" onclick="runBatchPredict()">Upload & Predict</button>
+    </form>
+    <div id="batchOutput" class="result"></div>
+
+    <!-- Метрики -->
+    <h2>Model Metrics</h2>
+    <button onclick="showMetrics()">Показати Confusion Matrix</button>
+    <img id="metricsImg">
+
+    <script>
+        async function runETL() {
+            const res = await fetch("/etl?input_file=titanic.csv&output_file=titanic_prepared.csv", { method: "POST" });
+            const result = await res.json();
+            document.getElementById("etlOutput").innerText = JSON.stringify(result, null, 2);
+        }
+
+        async function trainModel(type) {
+            const res = await fetch(`/train?model_type=${type}`, { method: "POST" });
+            const result = await res.json();
+            document.getElementById("trainOutput").innerText = JSON.stringify(result, null, 2);
+        }
+
+        document.getElementById("predictForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            const res = await fetch("/predict", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            document.getElementById("predictOutput").innerText =
+                result.prediction === 1 ? "✅ Пасажир вижив" : "❌ Пасажир не вижив";
+        });
+
+        async function runBatchPredict() {
+            const fileInput = document.getElementById("batchFile");
+            if (!fileInput.files.length) {
+                alert("Please select a CSV file first!");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            const res = await fetch("/predict_batch_file", { method: "POST", body: formData });
+            const result = await res.json();
+            document.getElementById("batchOutput").innerText = JSON.stringify(result, null, 2);
+        }
+
+        async function showMetrics() {
+            document.getElementById("metricsImg").src = "/metrics";
+            document.getElementById("metricsImg").style.display = "block";
+        }
+    </script>
+</body>
+</html>
