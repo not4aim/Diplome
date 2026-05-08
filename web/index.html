@@ -2,121 +2,402 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>ML Платформа - Titanic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Platform • Titanic Survival Prediction</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>ML Платформа – Titanic</h1>
 
-    <!-- ETL запуск -->
-    <section>
-        <h2>ETL Pipeline</h2>
-        <button onclick="runETL()">Запустити ETL</button>
-        <div id="etlOutput" class="result"></div>
-    </section>
+<div class="container">
 
-    <!-- Train модель -->
-    <section>
-        <h2>Навчання моделі</h2>
-        <button onclick="trainModel('rf')">Train RandomForest</button>
-        <button onclick="trainModel('nn')">Train Neural Network</button>
-        <div id="trainOutput" class="result"></div>
-    </section>
-        <h2>Прогноз для одного пасажира</h2>
-        <div class="flex-container">
-            <!-- Ліва колонка: форма -->
-            <div class="form-block">
-                <form id="predictForm">
-                    <label>Стать (0=жінка, 1=чоловік):</label>
-                    <input type="number" name="Sex" required>
-                    <label>Вік:</label>
-                    <input type="number" step="0.1" name="Age" required>
-                    <label>Вартість квитка (Fare):</label>
-                    <input type="number" step="0.1" name="Fare" required>
-                    <label>FamilySize:</label>
-                    <input type="number" name="FamilySize" required>
-                    <label>IsAlone (0/1):</label>
-                    <input type="number" name="IsAlone" required>
-                    <label>Title (код):</label>
-                    <input type="number" name="Title" required>
-                    <label>AgeGroup (0=дитина,1=молодь,2=дорослий,3=літній):</label>
-                    <input type="number" name="AgeGroup" required>
-                    <label>Embarked (код):</label>
-                    <input type="number" name="Embarked" required>
-                    <button type="submit">Отримати прогноз</button>
-                </form>
-                <div id="predictOutput" class="result"></div>
+    <header class="hero">
+        <div class="hero-content">
+            <p class="badge">Machine Learning Platform</p>
+
+            <h1>
+                Titanic Survival Prediction
+            </h1>
+
+            <p class="hero-text">
+                Інтелектуальна ML платформа для ETL, навчання моделей,
+                прогнозування виживання пасажирів та аналізу метрик.
+            </p>
+        </div>
+    </header>
+
+    <div class="dashboard">
+
+        <section>
+            <div class="section-header">
+                <div>
+                    <h2>ETL Pipeline</h2>
+                    <p class="section-description">
+                        Підготовка та очищення Titanic dataset
+                    </p>
+                </div>
             </div>
-            <div class="info-block">
-                <h3>Пояснення колонок</h3>
-                <table>
-                <tr><th>Колонка</th><th>Значення</th><th>Приклад</th></tr>
-                <tr><td>Fare</td><td>Вартість квитка (число)</td><td>7.25, 111.0</td></tr>
-                <tr><td>IsAlone</td><td>Чи сам пасажир (0=з родиною, 1=сам)</td><td>0 або 1</td></tr>
-                <tr><td>Title</td><td>Код титулу (Mr=1, Mrs=2, Miss=3, Master=4…)</td><td>1, 2, 3, 4</td></tr>
-                <tr><td>Embarked</td><td>Порт посадки (S=0, C=1, Q=2)</td><td>0, 1, 2</td></tr>
-                </table>
+
+            <button onclick="runETL()">
+                Запустити ETL Pipeline
+            </button>
+
+            <div id="etlOutput" class="result"></div>
+        </section>
+
+        <section>
+            <div class="section-header">
+                <div>
+                    <h2>Model Training</h2>
+                    <p class="section-description">
+                        Навчання моделей машинного навчання
+                    </p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button onclick="trainModel('rf')">
+                    Train RandomForest
+                </button>
+
+                <button onclick="trainModel('nn')">
+                    Train Neural Network
+                </button>
+            </div>
+
+            <div id="trainOutput" class="result"></div>
+        </section>
+
+    </div>
+
+    <section>
+
+        <div class="section-header">
+            <div>
+                <h2>Passenger Prediction</h2>
+                <p class="section-description">
+                    Прогноз виживання для одного пасажира
+                </p>
             </div>
         </div>
+
+        <div class="flex-container">
+
+            <div class="form-block">
+
+                <form id="predictForm">
+
+                    <div class="input-group">
+                        <label>Стать</label>
+                        <input
+                            type="number"
+                            name="Sex"
+                            placeholder="0 = жінка, 1 = чоловік"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>Вік</label>
+                        <input
+                            type="number"
+                            step="0.1"
+                            name="Age"
+                            placeholder="Наприклад: 25"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>Fare</label>
+                        <input
+                            type="number"
+                            step="0.1"
+                            name="Fare"
+                            placeholder="Вартість квитка"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>FamilySize</label>
+                        <input
+                            type="number"
+                            name="FamilySize"
+                            placeholder="Кількість членів сім'ї"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>IsAlone</label>
+                        <input
+                            type="number"
+                            name="IsAlone"
+                            placeholder="0 = ні, 1 = так"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>Title</label>
+                        <input
+                            type="number"
+                            name="Title"
+                            placeholder="Код титулу"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>AgeGroup</label>
+                        <input
+                            type="number"
+                            name="AgeGroup"
+                            placeholder="0-3"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>Embarked</label>
+                        <input
+                            type="number"
+                            name="Embarked"
+                            placeholder="0=S, 1=C, 2=Q"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit">
+                        Отримати прогноз
+                    </button>
+
+                </form>
+
+                <div id="predictOutput" class="result"></div>
+
+            </div>
+
+            <div class="info-block">
+
+                <h3>Пояснення параметрів</h3>
+
+                <table>
+
+                    <tr>
+                        <th>Колонка</th>
+                        <th>Опис</th>
+                        <th>Приклад</th>
+                    </tr>
+
+                    <tr>
+                        <td>Fare</td>
+                        <td>Вартість квитка</td>
+                        <td>7.25 / 111.0</td>
+                    </tr>
+
+                    <tr>
+                        <td>IsAlone</td>
+                        <td>Пасажир подорожує сам</td>
+                        <td>0 або 1</td>
+                    </tr>
+
+                    <tr>
+                        <td>Title</td>
+                        <td>Код титулу</td>
+                        <td>1, 2, 3, 4</td>
+                    </tr>
+
+                    <tr>
+                        <td>Embarked</td>
+                        <td>Порт посадки</td>
+                        <td>S=0, C=1, Q=2</td>
+                    </tr>
+
+                    <tr>
+                        <td>AgeGroup</td>
+                        <td>Категорія віку</td>
+                        <td>0-3</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
     </section>
     <section>
-        <h2>Batch Prediction (CSV)</h2>
+
+        <div class="section-header">
+            <div>
+                <h2>Batch Prediction</h2>
+                <p class="section-description">
+                    Масове прогнозування через CSV файл
+                </p>
+            </div>
+        </div>
+
         <form id="batchForm" enctype="multipart/form-data">
-            <input type="file" id="batchFile" name="file" accept=".csv">
-            <button type="button" onclick="runBatchPredict()">Upload & Predict</button>
+
+            <div class="input-group">
+                <label>CSV файл</label>
+
+                <input
+                    type="file"
+                    id="batchFile"
+                    name="file"
+                    accept=".csv"
+                >
+            </div>
+
+            <button type="button" onclick="runBatchPredict()">
+                Upload & Predict
+            </button>
+
         </form>
+
         <div id="batchOutput" class="result"></div>
+
     </section>
 
     <section>
-        <h2>Model Metrics</h2>
-        <button onclick="showMetrics()">Показати Confusion Matrix</button>
-        <img id="metricsImg">
+
+        <div class="section-header">
+            <div>
+                <h2>Model Metrics</h2>
+                <p class="section-description">
+                    Аналіз точності моделі
+                </p>
+            </div>
+        </div>
+
+        <button onclick="showMetrics()">
+            Показати Confusion Matrix
+        </button>
+
+        <img
+            id="metricsImg"
+            alt="Confusion Matrix"
+        >
+
     </section>
-    <script>
-        async function runETL() {
-            const res = await fetch("/etl?input_file=titanic.csv&output_file=titanic_prepared.csv", { method: "POST" });
-            const result = await res.json();
-            document.getElementById("etlOutput").innerText = JSON.stringify(result, null, 2);
-        }
 
-        async function trainModel(type) {
-            const res = await fetch(`/train?model_type=${type}`, { method: "POST" });
-            const result = await res.json();
-            document.getElementById("trainOutput").innerText = JSON.stringify(result, null, 2);
-        }
+</div>
 
-        document.getElementById("predictForm").addEventListener("submit", async function(e) {
+<script>
+
+    async function runETL() {
+
+        const res = await fetch(
+            "/etl?input_file=titanic.csv&output_file=titanic_prepared.csv",
+            {
+                method: "POST"
+            }
+        );
+
+        const result = await res.json();
+
+        document.getElementById("etlOutput").innerText =
+            JSON.stringify(result, null, 2);
+    }
+
+    async function trainModel(type) {
+
+        const res = await fetch(
+            `/train?model_type=${type}`,
+            {
+                method: "POST"
+            }
+        );
+
+        const result = await res.json();
+
+        document.getElementById("trainOutput").innerText =
+            JSON.stringify(result, null, 2);
+    }
+
+    document
+        .getElementById("predictForm")
+        .addEventListener("submit", async function(e) {
+
             e.preventDefault();
+
             const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
+
+            const data =
+                Object.fromEntries(formData.entries());
+
             const res = await fetch("/predict", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
                 body: JSON.stringify(data)
             });
+
             const result = await res.json();
-            document.getElementById("predictOutput").innerText =
-                result.prediction === 1 ? "✅ Пасажир вижив" : "❌ Пасажир не вижив";
+
+            document.getElementById("predictOutput").innerHTML =
+                result.prediction === 1
+                ? "✅ Пасажир вижив"
+                : "❌ Пасажир не вижив";
         });
 
-        async function runBatchPredict() {
-            const fileInput = document.getElementById("batchFile");
-            if (!fileInput.files.length) {
-                alert("Please select a CSV file first!");
-                return;
-            }
-            const formData = new FormData();
-            formData.append("file", fileInput.files[0]);
-            const res = await fetch("/predict_batch_file", { method: "POST", body: formData });
-            const result = await res.json();
-            document.getElementById("batchOutput").innerText = JSON.stringify(result, null, 2);
+    async function runBatchPredict() {
+
+        const fileInput =
+            document.getElementById("batchFile");
+
+        if (!fileInput.files.length) {
+
+            alert("Оберіть CSV файл");
+
+            return;
         }
 
-        async function showMetrics() {
-            document.getElementById("metricsImg").src = "/metrics";
-            document.getElementById("metricsImg").style.display = "block";
-        }
-    </script>
+        const formData = new FormData();
+
+        formData.append(
+            "file",
+            fileInput.files[0]
+        );
+
+        const res = await fetch(
+            "/predict_batch_file",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const result = await res.json();
+
+        document.getElementById("batchOutput").innerText =
+            JSON.stringify(result, null, 2);
+    }
+
+    async function showMetrics() {
+
+        const img =
+            document.getElementById("metricsImg");
+
+        img.src = "/metrics";
+
+        img.style.display = "block";
+    }
+
+</script>
+
 </body>
 </html>
