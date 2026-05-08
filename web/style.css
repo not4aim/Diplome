@@ -78,17 +78,16 @@ input:focus {
     display: flex;
     gap: 40px;
     align-items: flex-start;
-    flex-wrap: wrap;
 }
 
-/* Ліва колонка */
 .form-block {
-    flex: 1;
+    flex: 2; 
+    min-width: 300px;
 }
 
-/* Права колонка (таблиця пояснень) */
 .info-block {
-    flex: 1;
+    flex: 1; /* таблиця праворуч */
+    min-width: 250px;
     background: #fff;
     padding: 15px;
     border-radius: 8px;
