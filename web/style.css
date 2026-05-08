@@ -1,8 +1,9 @@
+/* Загальні стилі */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 20px;
     background: linear-gradient(to right, #e0f7fa, #f1f8e9);
-    color: #158a91;
+    color: #2c3e50;
 }
 
 h1 {
@@ -78,16 +79,17 @@ input:focus {
     display: flex;
     gap: 40px;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
+/* Ліва колонка */
 .form-block {
-    flex: 2; 
-    min-width: 300px;
+    flex: 1;
 }
 
+/* Права колонка (таблиця пояснень) */
 .info-block {
-    flex: 1; /* таблиця праворуч */
-    min-width: 250px;
+    flex: 1;
     background: #fff;
     padding: 15px;
     border-radius: 8px;
