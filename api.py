@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 import joblib
 import pandas as pd
 import logging
+import numpy as np
 
 from etl import run_etl
 from ml_model import train_rf
@@ -82,9 +83,22 @@ def predict(passenger: Passenger):
         except Exception:
             return {"error": "Model not trained yet"}
 
-    data = [[passenger.Sex, passenger.Age, passenger.Fare, passenger.FamilySize,
-             passenger.IsAlone, passenger.Title, passenger.AgeGroup, passenger.Embarked]]
-    prediction = model.predict(data)[0]
+    data = [[
+        passenger.Sex, passenger.Age, passenger.Fare, passenger.FamilySize,
+        passenger.IsAlone, passenger.Title, passenger.AgeGroup, passenger.Embarked
+    ]]
+
+    # Перетворення у NumPy масив
+    X = np.array(data).reshape(1, -1)
+
+    try:
+        prediction = model.predict(X)[0]
+    except Exception as e:
+        return {"error": f"Prediction failed: {str(e)}"}
+
+    # Приведення результату до int
+    if isinstance(prediction, (np.ndarray, list)):
+        prediction = prediction.item()
     return {"prediction": int(prediction)}
 
 @app.post("/predict_batch_json")

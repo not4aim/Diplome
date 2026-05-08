@@ -29,29 +29,62 @@
     <button onclick="trainModel('nn')">Train Neural Network</button>
     <div id="trainOutput" class="result"></div>
 
-    <!-- Predict для одного пасажира -->
-    <h2>Прогноз для одного пасажира</h2>
-    <form id="predictForm">
-        <label>Стать (0=жінка, 1=чоловік):</label>
-        <input type="number" name="Sex" required>
-        <label>Вік:</label>
-        <input type="number" step="0.1" name="Age" required>
-        <label>Вартість квитка (Fare):</label>
-        <input type="number" step="0.1" name="Fare" required>
-        <label>FamilySize:</label>
-        <input type="number" name="FamilySize" required>
-        <label>IsAlone (0/1):</label>
-        <input type="number" name="IsAlone" required>
-        <label>Title (код):</label>
-        <input type="number" name="Title" required>
-        <label>AgeGroup (0=дитина,1=молодь,2=дорослий,3=літній):</label>
-        <input type="number" name="AgeGroup" required>
-        <label>Embarked (код):</label>
-        <input type="number" name="Embarked" required>
-        <button type="submit">Отримати прогноз</button>
-    </form>
-    <div id="predictOutput" class="result"></div>
+    <<div style="display: flex; gap: 20px;">
+    <!-- Ліва колонка: форма -->
+    <div style="flex: 1;">
+        <form id="predictForm">
+            <label>Стать (0=жінка, 1=чоловік):</label>
+            <input type="number" name="Sex" required>
+            <label>Вік:</label>
+            <input type="number" step="0.1" name="Age" required>
+            <label>Вартість квитка (Fare):</label>
+            <input type="number" step="0.1" name="Fare" required>
+            <label>FamilySize:</label>
+            <input type="number" name="FamilySize" required>
+            <label>IsAlone (0/1):</label>
+            <input type="number" name="IsAlone" required>
+            <label>Title (код):</label>
+            <input type="number" name="Title" required>
+            <label>AgeGroup (0=дитина,1=молодь,2=дорослий,3=літній):</label>
+            <input type="number" name="AgeGroup" required>
+            <label>Embarked (код):</label>
+            <input type="number" name="Embarked" required>
+            <button type="submit">Отримати прогноз</button>
+        </form>
+        <div id="predictOutput" class="result"></div>
+    </div>
 
+    <!-- Права колонка: таблиця пояснень -->
+    <div style="flex: 1;">
+        <h3>Пояснення колонок</h3>
+        <table border="1" style="border-collapse: collapse; width: 100%;">
+          <tr>
+            <th>Колонка</th>
+            <th>Значення</th>
+            <th>Приклад</th>
+          </tr>
+          <tr>
+            <td>Fare</td>
+            <td>Вартість квитка (число)</td>
+            <td>7.25, 111.0</td>
+          </tr>
+          <tr>
+            <td>IsAlone</td>
+            <td>Чи сам пасажир (0=з родиною, 1=сам)</td>
+            <td>0 або 1</td>
+          </tr>
+          <tr>
+            <td>Title</td>
+            <td>Код титулу (Mr=1, Mrs=2, Miss=3, Master=4…)</td>
+            <td>1, 2, 3, 4</td>
+          </tr>
+          <tr>
+            <td>Embarked</td>
+            <td>Порт посадки (S=0, C=1, Q=2)</td>
+            <td>0, 1, 2</td>
+          </tr>
+        </table>
+    </div>
     <!-- Batch Predict -->
     <h2>Batch Prediction (CSV)</h2>
     <form id="batchForm" enctype="multipart/form-data">
