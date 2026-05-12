@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ML Platform • Titanic Survival Prediction</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
@@ -19,30 +20,36 @@
 <div class="container">
 
     <header class="hero">
+
         <div class="hero-content">
-            <p class="badge">Machine Learning Platform</p>
 
             <h1>
                 Titanic Survival Prediction
             </h1>
 
             <p class="hero-text">
-                Інтелектуальна ML платформа для ETL, навчання моделей,
-                прогнозування виживання пасажирів та аналізу метрик.
+                Інтелектуальна платформа для ETL, тренування моделей,
+                прогнозування та аналізу ML метрик.
             </p>
+
         </div>
+
     </header>
 
     <div class="dashboard">
 
         <section>
+
             <div class="section-header">
+
                 <div>
                     <h2>ETL Pipeline</h2>
+
                     <p class="section-description">
-                        Підготовка та очищення Titanic dataset
+                        Очищення та підготовка Titanic dataset
                     </p>
                 </div>
+
             </div>
 
             <button onclick="runETL()">
@@ -50,19 +57,25 @@
             </button>
 
             <div id="etlOutput" class="result"></div>
+
         </section>
 
         <section>
+
             <div class="section-header">
+
                 <div>
                     <h2>Model Training</h2>
+
                     <p class="section-description">
                         Навчання моделей машинного навчання
                     </p>
                 </div>
+
             </div>
 
             <div class="button-group">
+
                 <button onclick="trainModel('rf')">
                     Train RandomForest
                 </button>
@@ -70,9 +83,11 @@
                 <button onclick="trainModel('nn')">
                     Train Neural Network
                 </button>
+
             </div>
 
             <div id="trainOutput" class="result"></div>
+
         </section>
 
     </div>
@@ -80,100 +95,271 @@
     <section>
 
         <div class="section-header">
+
             <div>
                 <h2>Passenger Prediction</h2>
+
                 <p class="section-description">
-                    Прогноз виживання для одного пасажира
+                    Введіть параметри пасажира для прогнозування виживання
                 </p>
             </div>
+
         </div>
 
-        <div class="flex-container">
+        <div class="prediction-layout">
 
             <div class="form-block">
+
+                <div class="prediction-intro">
+
+                    <h3>Дані пасажира</h3>
+
+                    <p>
+                        Заповніть інформацію про пасажира Titanic.
+                        Наведіть курсор на поле або скористайтесь прикладами справа.
+                    </p>
+
+                </div>
 
                 <form id="predictForm">
 
                     <div class="input-group">
-                        <label>Стать</label>
-                        <input
-                            type="number"
-                            name="Sex"
-                            placeholder="0 = жінка, 1 = чоловік"
-                            required
-                        >
+
+                        <label for="sex">
+                            Стать
+                        </label>
+
+                        <select id="sex"
+                                name="Sex"
+                                required>
+
+                            <option value="">
+                                Оберіть стать
+                            </option>
+
+                            <option value="0">
+                                Жінка
+                            </option>
+
+                            <option value="1">
+                                Чоловік
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Вкажіть стать пасажира
+                        </small>
+
                     </div>
 
                     <div class="input-group">
-                        <label>Вік</label>
+
+                        <label for="age">
+                            Вік
+                        </label>
+
                         <input
-                            type="number"
-                            step="0.1"
-                            name="Age"
-                            placeholder="Наприклад: 25"
-                            required
+                                id="age"
+                                type="number"
+                                step="0.1"
+                                min="0"
+                                name="Age"
+                                placeholder="Наприклад: 24"
+                                required
                         >
+
+                        <small>
+                            Реальний вік пасажира
+                        </small>
+
                     </div>
 
                     <div class="input-group">
-                        <label>Fare</label>
+
+                        <label for="fare">
+                            Вартість квитка (Fare)
+                        </label>
+
                         <input
-                            type="number"
-                            step="0.1"
-                            name="Fare"
-                            placeholder="Вартість квитка"
-                            required
+                                id="fare"
+                                type="number"
+                                step="0.1"
+                                min="0"
+                                name="Fare"
+                                placeholder="Наприклад: 35.5"
+                                required
                         >
+
+                        <small>
+                            Вартість квитка Titanic
+                        </small>
+
                     </div>
 
                     <div class="input-group">
-                        <label>FamilySize</label>
+
+                        <label for="family">
+                            FamilySize
+                        </label>
+
                         <input
-                            type="number"
-                            name="FamilySize"
-                            placeholder="Кількість членів сім'ї"
-                            required
+                                id="family"
+                                type="number"
+                                min="1"
+                                name="FamilySize"
+                                placeholder="Наприклад: 3"
+                                required
                         >
+
+                        <small>
+                            Загальна кількість родичів разом із пасажиром
+                        </small>
+
                     </div>
 
                     <div class="input-group">
-                        <label>IsAlone</label>
-                        <input
-                            type="number"
-                            name="IsAlone"
-                            placeholder="0 = ні, 1 = так"
-                            required
-                        >
+
+                        <label for="alone">
+                            Пасажир подорожує сам?
+                        </label>
+
+                        <select id="alone"
+                                name="IsAlone"
+                                required>
+
+                            <option value="">
+                                Оберіть варіант
+                            </option>
+
+                            <option value="1">
+                                Так
+                            </option>
+
+                            <option value="0">
+                                Ні
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Якщо пасажир без родини — виберіть "Так"
+                        </small>
+
                     </div>
 
                     <div class="input-group">
-                        <label>Title</label>
-                        <input
-                            type="number"
-                            name="Title"
-                            placeholder="Код титулу"
-                            required
-                        >
+
+                        <label for="title">
+                            Код титулу (Title)
+                        </label>
+
+                        <select id="title"
+                                name="Title"
+                                required>
+
+                            <option value="">
+                                Оберіть титул
+                            </option>
+
+                            <option value="0">
+                                Mr
+                            </option>
+
+                            <option value="1">
+                                Miss
+                            </option>
+
+                            <option value="2">
+                                Mrs
+                            </option>
+
+                            <option value="3">
+                                Master
+                            </option>
+
+                            <option value="4">
+                                Rare
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Соціальний титул пасажира
+                        </small>
+
                     </div>
 
                     <div class="input-group">
-                        <label>AgeGroup</label>
-                        <input
-                            type="number"
-                            name="AgeGroup"
-                            placeholder="0-3"
-                            required
-                        >
+
+                        <label for="group">
+                            Вікова група (AgeGroup)
+                        </label>
+
+                        <select id="group"
+                                name="AgeGroup"
+                                required>
+
+                            <option value="">
+                                Оберіть категорію
+                            </option>
+
+                            <option value="0">
+                                Дитина (0-12)
+                            </option>
+
+                            <option value="1">
+                                Молодь (13-18)
+                            </option>
+
+                            <option value="2">
+                                Дорослий (19-50)
+                            </option>
+
+                            <option value="3">
+                                Літній (50+)
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Категорія віку пасажира
+                        </small>
+
                     </div>
 
                     <div class="input-group">
-                        <label>Embarked</label>
-                        <input
-                            type="number"
-                            name="Embarked"
-                            placeholder="0=S, 1=C, 2=Q"
-                            required
-                        >
+
+                        <label for="embarked">
+                            Порт посадки (Embarked)
+                        </label>
+
+                        <select id="embarked"
+                                name="Embarked"
+                                required>
+
+                            <option value="">
+                                Оберіть порт
+                            </option>
+
+                            <option value="0">
+                                Southampton (S)
+                            </option>
+
+                            <option value="1">
+                                Cherbourg (C)
+                            </option>
+
+                            <option value="2">
+                                Queenstown (Q)
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Порт, у якому пасажир сів на корабель
+                        </small>
+
                     </div>
 
                     <button type="submit">
@@ -188,96 +374,127 @@
 
             <div class="info-block">
 
-                <h3>Пояснення параметрів</h3>
+                <h3>
+                    Як правильно заповнювати форму
+                </h3>
 
-                <table>
+                <div class="tips-grid">
 
-                    <tr>
-                        <th>Колонка</th>
-                        <th>Опис</th>
-                        <th>Приклад</th>
-                    </tr>
+                    <div class="tip-card">
+                        <h4>Стать</h4>
+                        <p>
+                            Жінка = 0, Чоловік = 1
+                        </p>
+                    </div>
 
-                    <tr>
-                        <td>Fare</td>
-                        <td>Вартість квитка</td>
-                        <td>7.25 / 111.0</td>
-                    </tr>
+                    <div class="tip-card">
+                        <h4>FamilySize</h4>
+                        <p>
+                            Кількість родичів + сам пасажир
+                        </p>
+                    </div>
 
-                    <tr>
-                        <td>IsAlone</td>
-                        <td>Пасажир подорожує сам</td>
-                        <td>0 або 1</td>
-                    </tr>
+                    <div class="tip-card">
+                        <h4>IsAlone</h4>
+                        <p>
+                            1 = самостійна подорож
+                        </p>
+                    </div>
 
-                    <tr>
-                        <td>Title</td>
-                        <td>Код титулу</td>
-                        <td>1, 2, 3, 4</td>
-                    </tr>
+                    <div class="tip-card">
+                        <h4>Fare</h4>
+                        <p>
+                            Ціна квитка Titanic
+                        </p>
+                    </div>
 
-                    <tr>
-                        <td>Embarked</td>
-                        <td>Порт посадки</td>
-                        <td>S=0, C=1, Q=2</td>
-                    </tr>
+                </div>
 
-                    <tr>
-                        <td>AgeGroup</td>
-                        <td>Категорія віку</td>
-                        <td>0-3</td>
-                    </tr>
+                <div class="example-card">
 
-                </table>
+                    <h4>
+                        Приклад заповнення
+                    </h4>
+
+                    <ul>
+
+                        <li><strong>Стать:</strong> Жінка</li>
+                        <li><strong>Вік:</strong> 24</li>
+                        <li><strong>Fare:</strong> 75.5</li>
+                        <li><strong>FamilySize:</strong> 2</li>
+                        <li><strong>IsAlone:</strong> Ні</li>
+                        <li><strong>Title:</strong> Miss</li>
+                        <li><strong>AgeGroup:</strong> Дорослий</li>
+                        <li><strong>Embarked:</strong> Southampton</li>
+
+                    </ul>
+
+                </div>
 
             </div>
 
         </div>
 
     </section>
+
     <section>
 
         <div class="section-header">
+
             <div>
                 <h2>Batch Prediction</h2>
+
                 <p class="section-description">
                     Масове прогнозування через CSV файл
                 </p>
             </div>
+
         </div>
 
-        <form id="batchForm" enctype="multipart/form-data">
+        <form id="batchForm"
+              enctype="multipart/form-data">
 
             <div class="input-group">
-                <label>CSV файл</label>
+
+                <label for="batchFile">
+                    CSV файл
+                </label>
 
                 <input
-                    type="file"
-                    id="batchFile"
-                    name="file"
-                    accept=".csv"
+                        type="file"
+                        id="batchFile"
+                        name="file"
+                        accept=".csv"
                 >
+
             </div>
 
-            <button type="button" onclick="runBatchPredict()">
+            <button type="button"
+                    onclick="runBatchPredict()">
+
                 Upload & Predict
+
             </button>
 
         </form>
 
-        <div id="batchOutput" class="result"></div>
+        <div id="batchOutput"
+             class="result"></div>
 
     </section>
 
     <section>
 
         <div class="section-header">
+
             <div>
                 <h2>Model Metrics</h2>
+
                 <p class="section-description">
-                    Аналіз точності моделі
+                    Аналіз ефективності моделі
                 </p>
             </div>
+
         </div>
 
         <button onclick="showMetrics()">
@@ -285,8 +502,8 @@
         </button>
 
         <img
-            id="metricsImg"
-            alt="Confusion Matrix"
+                id="metricsImg"
+                alt="Confusion Matrix"
         >
 
     </section>
@@ -327,16 +544,18 @@
 
     document
         .getElementById("predictForm")
-        .addEventListener("submit", async function(e) {
+        .addEventListener("submit", async function (e) {
 
             e.preventDefault();
 
-            const formData = new FormData(e.target);
+            const formData =
+                new FormData(e.target);
 
             const data =
                 Object.fromEntries(formData.entries());
 
             const res = await fetch("/predict", {
+
                 method: "POST",
 
                 headers: {
@@ -350,8 +569,8 @@
 
             document.getElementById("predictOutput").innerHTML =
                 result.prediction === 1
-                ? "✅ Пасажир вижив"
-                : "❌ Пасажир не вижив";
+                    ? "✅ Пасажир вижив"
+                    : "❌ Пасажир не вижив";
         });
 
     async function runBatchPredict() {
@@ -366,7 +585,8 @@
             return;
         }
 
-        const formData = new FormData();
+        const formData =
+            new FormData();
 
         formData.append(
             "file",

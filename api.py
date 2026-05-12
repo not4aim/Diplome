@@ -1,21 +1,29 @@
 from fastapi import FastAPI, Query, UploadFile, File
 from pydantic import BaseModel, Field
 from typing import List
+from pathlib import Path
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import joblib
 import pandas as pd
 import logging
 import numpy as np
-
 from etl import run_etl
 from ml_model import train_rf
 from nn_model import train_nn
 
-# Налаштування логування
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="ML Платформа Titanic")
 model = None
+BASE_DIR = Path(__file__).resolve().parent
+
+app.mount(
+    "/static",
+    StaticFiles(directory=BASE_DIR / "static"),
+    name="static"
+)
 
 class Passenger(BaseModel):
     Sex: int = Field(..., ge=0, le=1, description="0=Female, 1=Male")
@@ -29,7 +37,6 @@ class Passenger(BaseModel):
 
 @app.get("/")
 def home():
-    """Головна сторінка з HTML-інтерфейсом"""
     return FileResponse("web/index.html")
 
 @app.post("/etl")
@@ -37,7 +44,6 @@ def etl_pipeline(
     input_file: str = Query("titanic.csv", description="Шлях до вхідного CSV"),
     output_file: str = Query("titanic_prepared.csv", description="Шлях до вихідного CSV")
 ):
-    """Запуск ETL-процесу"""
     try:
         df = run_etl(input_file, output_file)
         logging.info(f"ETL завершено: {len(df)} рядків")
@@ -53,7 +59,6 @@ def etl_pipeline(
 
 @app.post("/train")
 def train_model(model_type: str = Query("rf", description="Тип моделі: rf або nn")):
-    """Навчання моделі"""
     try:
         df = pd.read_csv("titanic_prepared.csv")
         global model
@@ -75,7 +80,6 @@ def train_model(model_type: str = Query("rf", description="Тип моделі: 
 
 @app.post("/predict")
 def predict(passenger: Passenger):
-    """Прогноз для одного пасажира"""
     global model
     if model is None:
         try:
@@ -88,7 +92,6 @@ def predict(passenger: Passenger):
         passenger.IsAlone, passenger.Title, passenger.AgeGroup, passenger.Embarked
     ]]
 
-    # Перетворення у NumPy масив
     X = np.array(data).reshape(1, -1)
 
     try:
@@ -96,14 +99,12 @@ def predict(passenger: Passenger):
     except Exception as e:
         return {"error": f"Prediction failed: {str(e)}"}
 
-    # Приведення результату до int
     if isinstance(prediction, (np.ndarray, list)):
         prediction = prediction.item()
     return {"prediction": int(prediction)}
 
 @app.post("/predict_batch_json")
 def predict_batch_json(passengers: List[Passenger]):
-    """Прогноз для групи пасажирів (JSON)"""
     global model
     if model is None:
         try:
@@ -119,7 +120,6 @@ def predict_batch_json(passengers: List[Passenger]):
 
 @app.post("/predict_batch_file")
 def predict_batch_file(file: UploadFile = File(...)):
-    """Прогноз для групи пасажирів (CSV-файл)"""
     global model
     if model is None:
         try:
@@ -136,5 +136,4 @@ def predict_batch_file(file: UploadFile = File(...)):
 
 @app.get("/metrics")
 def get_metrics():
-    """Отримати confusion matrix"""
     return FileResponse("confusion_matrix.png")

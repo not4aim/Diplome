@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -196,7 +195,6 @@ select:focus {
     width: 100%;
 }
 
-
 .info-block {
     background: rgba(17,24,39,0.9);
 
@@ -252,7 +250,6 @@ input[type="file"] {
     cursor: pointer;
 }
 
-
 #metricsImg {
     margin-top: 22px;
 
@@ -303,6 +300,7 @@ input[type="file"] {
 section {
     animation: fadeIn 0.5s ease;
 }
+
 @media (max-width: 1100px) {
     .flex-container {
         grid-template-columns: 1fr;
@@ -355,5 +353,128 @@ section {
     .info-block td {
         padding: 12px;
         font-size: 13px;
+    }
+}
+.prediction-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 28px;
+    align-items: start;
+}
+
+.prediction-intro {
+    margin-bottom: 28px;
+}
+
+.prediction-intro p {
+    color: #94a3b8;
+    line-height: 1.7;
+    margin-top: 10px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-group small {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.tip-card {
+    background: rgba(30,41,59,0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(56,189,248,0.35);
+}
+
+.tip-card h4 {
+    margin-bottom: 8px;
+    color: #f8fafc;
+    font-size: 15px;
+}
+
+.tip-card p {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.example-card {
+    margin-top: 28px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(15,23,42,0.95),
+        rgba(30,41,59,0.95)
+    );
+
+    border: 1px solid rgba(56,189,248,0.15);
+
+    border-radius: 22px;
+
+    padding: 24px;
+}
+
+.example-card h4 {
+    margin-bottom: 16px;
+    color: #38bdf8;
+    font-size: 18px;
+}
+
+.example-card ul {
+    list-style: none;
+}
+
+.example-card li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.example-card li:last-child {
+    border-bottom: none;
+}
+
+.example-card strong {
+    color: #ffffff;
+}
+
+@media (max-width: 1100px) {
+
+    .prediction-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .tips-grid {
+        grid-template-columns: 1fr;
     }
 }
